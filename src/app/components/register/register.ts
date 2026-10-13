@@ -34,7 +34,7 @@ export class Register {
       return;
     }
 
-    if (username.length > 10) {
+    if (username.length > 18) {
       this.errorMessage = 'Username cannot exceed 18 characters.';
       return;
     }
