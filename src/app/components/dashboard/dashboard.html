@@ -1,0 +1,177 @@
+<app-navbar></app-navbar>
+
+<div
+  class="min-h-screen bg-(--bg-main) py-4 px-2.5 sm:p-6 transition-colors duration-300 relative w-full overflow-x-hidden">
+  <div class="max-w-7xl mx-auto w-full overflow-x-hidden">
+
+    <div
+      class="bg-(--bg-card) rounded-2xl shadow-sm border border-(--border-color) p-4 sm:p-5 mb-6 sm:mb-8 transition-colors duration-300 w-full box-border">
+      <form (ngSubmit)="onSearch()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end w-full">
+
+        <div class="lg:col-span-1">
+          <label class="block text-[11px] font-bold text-(--text-muted) uppercase tracking-wider mb-1.5">Card Name</label>
+          <input type="text" [(ngModel)]="filters.name" name="name" placeholder="Pikachu..."
+                 class="w-full bg-(--bg-main) border border-(--border-color) rounded-xl px-3 py-2 text-(--text-main) focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors duration-300 text-sm">
+        </div>
+
+        <div class="lg:col-span-1">
+          <label class="block text-[11px] font-bold text-(--text-muted) uppercase tracking-wider mb-1.5">Set</label>
+          <select [(ngModel)]="filters.setId" name="setId"
+                  class="cursor-pointer w-full bg-(--bg-main) border border-(--border-color) rounded-xl px-3 py-2 text-(--text-main) focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors duration-300 text-sm">
+            <option value="">All Sets</option>
+            @for (set of sets; track set.id) {
+              <option [value]="set.id">{{ set.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="lg:col-span-1">
+          <label class="block text-[11px] font-bold text-(--text-muted) uppercase tracking-wider mb-1.5">Illustrator</label>
+          <select [(ngModel)]="filters.illustratorId" name="illustratorId"
+                  class="cursor-pointer w-full bg-(--bg-main) border border-(--border-color) rounded-xl px-3 py-2 text-(--text-main) focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors duration-300 text-sm">
+            <option value="">All Illustrators</option>
+            @for (ill of illustrators; track ill) {
+              <option [value]="ill">{{ ill }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="lg:col-span-1">
+          <label class="block text-[11px] font-bold text-(--text-muted) uppercase tracking-wider mb-1.5">Rarity</label>
+          <select [(ngModel)]="filters.rarity" name="rarity"
+                  class="cursor-pointer w-full bg-(--bg-main) border border-(--border-color) rounded-xl px-3 py-2 text-(--text-main) focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors duration-300 text-sm">
+            <option value="">All Rarities</option>
+            @for (rarity of rarities; track rarity) {
+              <option [value]="rarity">{{ rarity }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="lg:col-span-1">
+          <label class="block text-[11px] font-bold text-(--text-muted) uppercase tracking-wider mb-1.5">Sort</label>
+          <select (change)="changeSort($event)"
+                  class="cursor-pointer w-full bg-(--bg-main) border border-(--border-color) rounded-xl px-3 py-2 text-(--text-main) focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors duration-300 text-sm">
+            <option value="none" [selected]="currentSort === 'none'">Default</option>
+            <option value="name-asc" [selected]="currentSort === 'name-asc'">Name (A-Z)</option>
+            <option value="name-desc" [selected]="currentSort === 'name-desc'">Name (Z-A)</option>
+            <option value="release-new" [selected]="currentSort === 'release-new'">Newest Set</option>
+            <option value="release-old" [selected]="currentSort === 'release-old'">Oldest Set</option>
+            <option value="number-asc" [selected]="currentSort === 'number-asc'">Number (ASC)</option>
+            <option value="number-desc" [selected]="currentSort === 'number-desc'">Number (DESC)</option>
+            <option value="rarity-asc" [selected]="currentSort === 'rarity-asc'">Rarity (ASC)</option>
+            <option value="rarity-desc" [selected]="currentSort === 'rarity-desc'">Rarity (DESC)</option>
+          </select>
+        </div>
+
+        <div class="lg:col-span-5 flex items-center justify-end gap-2 pt-1 border-t border-(--border-color) mt-2">
+          <button type="button" (click)="clearFilters()"
+                  class="cursor-pointer px-4 py-2 bg-(--bg-main) hover:bg-(--bg-input) text-(--text-muted) hover:text-(--text-main) border border-(--border-color) font-medium rounded-xl text-xs transition-all">
+            Clear Filters
+          </button>
+          <button type="submit"
+                  class="cursor-pointer px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-sm hover:shadow active:scale-[0.98] transition-all dark:bg-amber-400 dark:hover:bg-amber-500 dark:text-slate-900 text-xs">
+            Search
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    @if (cards.length === 0 && !isLoading) {
+      <div
+        class="bg-(--bg-card) rounded-2xl shadow-sm border border-(--border-color) p-8 sm:p-12 text-center transition-colors duration-300 w-full box-border">
+        <div
+          class="w-14 h-14 mx-auto mb-4 rounded-full bg-(--bg-main) border border-(--border-color) flex items-center justify-center text-(--text-muted)">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+          </svg>
+        </div>
+        <p class="text-(--text-muted) font-medium text-base sm:text-lg">No cards found matching your search
+          criteria.</p>
+      </div>
+    }
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-6 w-full auto-rows-fr">
+      @for (card of cards; track card.id) {
+        <app-pokemon-card
+          [card]="card"
+          [currentSection]="currentSection"
+          [inCollection]="isInCollection(card.id)"
+          [inWishlist]="isInWishlist(card.id)"
+          (toggleCollection)="onToggleCollection($event)"
+          (toggleWishlist)="onToggleWishlist($event)"
+          (moveToCollection)="onMoveToCollection($event)"
+          (openDetails)="handleOpenDetails($event)">
+        </app-pokemon-card>
+      }
+
+      @if (selectedCard) {
+        <app-pokemon-card-details
+          [card]="selectedCard"
+          [inCollection]="isInCollection(selectedCard.id)"
+          [inWishlist]="isInWishlist(selectedCard.id)"
+          [currentSection]="currentSection"
+          (toggleCollection)="onToggleCollection($event)"
+          (toggleWishlist)="onToggleWishlist($event)"
+          (moveToCollection)="onMoveToCollection($event)"
+          (close)="closeDetails()">
+        </app-pokemon-card-details>
+      }
+    </div>
+
+    @if (totalPages > 1) {
+      <div
+        class="flex justify-center items-center gap-2 mt-8 sm:mt-12 w-full">
+
+        <button [disabled]="filters.page === 1"
+                (click)="changePage(-1)"
+                class="bg-(--bg-card) border border-(--border-color) px-3 py-2 rounded-xl text-xs font-bold
+                 cursor-pointer hover:bg-(--bg-input) active:scale-95 transition-all
+                 disabled:cursor-not-allowed disabled:opacity-40">
+          Prev
+        </button>
+
+        @for (p of getVisiblePages(); track p) {
+          <button (click)="goToPage(p)"
+                  [class.bg-amber-500]="p === filters.page"
+                  [class.text-white]="p === filters.page"
+                  [class.shadow-md]="p === filters.page"
+                  [class.border-amber-500]="p === filters.page"
+                  class="w-8 h-8 flex items-center justify-center rounded-xl text-xs font-bold border border-(--border-color)
+                   cursor-pointer hover:border-amber-500 hover:text-amber-500 active:scale-90 transition-all">
+            {{ p }}
+          </button>
+        }
+
+        <button [disabled]="filters.page >= totalPages" (click)="changePage(1)"
+                class="bg-(--bg-card) border border-(--border-color) px-3 py-2 rounded-xl text-xs font-bold
+                 cursor-pointer hover:bg-(--bg-input) active:scale-95 transition-all
+                 disabled:cursor-not-allowed disabled:opacity-40">
+          Next
+        </button>
+      </div>
+    }
+
+  </div>
+
+  @if (isLoading) {
+    <div
+      class="fixed inset-0 z-100 flex flex-col items-center justify-center bg-slate-900/70 backdrop-blur-md transition-all duration-300">
+      <div class="relative">
+        <div class="absolute inset-0 bg-amber-400/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
+        <img src="https://media.tenor.com/QoVDZFpuIJMAAAAi/pikachu.gif"
+             alt="Pikachu Running"
+             class="w-24 h-24 sm:w-32 sm:h-32 relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">
+      </div>
+      <div class="mt-6 text-center relative z-10 px-4">
+        <p class="text-amber-400 font-black tracking-[0.2em] uppercase text-base italic animate-bounce">
+          Pika-Loading...
+        </p>
+        <p class="text-slate-300 text-[10px] mt-2 font-medium tracking-widest uppercase opacity-70">
+          Syncing PokéDex...
+        </p>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,68 @@
+<app-navbar></app-navbar>
+
+<div class="admin-container">
+  <header class="admin-header">
+    <div>
+      <h1>Administrative Panel</h1>
+    </div>
+    <button class="btn-primary" (click)="triggerDataImport()">Sync Data</button>
+  </header>
+
+  <table class="admin-table">
+    <thead>
+    <tr>
+      <th>Trainer</th>
+      <th>Resources</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (user of users; track user.id || user.username) {
+        <tr>
+          <td>
+            <div class="user-meta">
+              <strong>{{ user.username }}</strong>
+              <span class="user-email">{{ user.email }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="badge-container">
+              <span class="badge badge-col">{{ user.collectionSize }} Collection</span>
+              <span class="badge badge-wish">{{ user.wishlistSize }} Wishlist</span>
+            </div>
+          </td>
+          <td>
+            <select class="compact-select" (change)="onActionSelected($event, user)">
+              <option value="" disabled selected>Options...</option>
+              <option value="pwd">Reset Password</option>
+              <option value="email">Change Email</option>
+              <option value="clear-coll">Empty Collection</option>
+              <option value="clear-wish">Empty Wishlist</option>
+              <option value="delete" class="option-danger">Delete Account</option>
+            </select>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (isModalOpen) {
+  <div class="modal-backdrop" (click)="closeCustomModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ modalTitle }}</h2>
+      </div>
+      <div class="modal-body">
+        <p>{{ modalMessage }}</p>
+        @if (requiresInput) {
+          <input [(ngModel)]="inputValue" class="modal-text-input" />
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeCustomModal()">Cancel</button>
+        <button class="btn btn-confirm" (click)="confirmCustomModal()">Confirm</button>
+      </div>
+    </div>
+  </div>
+}

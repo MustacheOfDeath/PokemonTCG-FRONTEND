@@ -1,0 +1,167 @@
+[
+  {
+    "id": "rarity_secret_illustration",
+    "title": "Elite Collector",
+    "description": "Find a Illustration rare card.",
+    "image": "assets/achievements/badges/rarity_secret_illustration.png",
+    "category": "rarity",
+    "conditionKey": "Illustration rare",
+    "target": 1,
+    "colorClass": "from-cyan-500 via-purple-500 to-emerald-400"
+  },
+  {
+    "id": "coll_general_20",
+    "title": "Novice Trainer",
+    "description": "Collect your first 20 Pokémon in your album.",
+    "image": "assets/achievements/badges/coll_general_20.png",
+    "category": "quantity",
+    "target": 20,
+    "colorClass": "from-amber-600 to-amber-500"
+  },
+  {
+    "id": "coll_general_100",
+    "title": "Expert Collector",
+    "description": "Reach 100 Pokémon in your album.",
+    "image": "assets/achievements/badges/coll_general_100.png",
+    "category": "quantity",
+    "target": 100,
+    "colorClass": "from-slate-400 to-zinc-300"
+  },
+  {
+    "id": "coll_general_500",
+    "title": "Album Master",
+    "description": "Reach 500 Pokémon in your album.",
+    "image": "assets/achievements/badges/coll_general_500.png",
+    "category": "quantity",
+    "target": 500,
+    "colorClass": "from-yellow-500 to-amber-300"
+  },
+  {
+    "id": "coll_general_2000",
+    "title": "Ultra Collector",
+    "description": "Reach 2000 Pokémon in your album.",
+    "image": "assets/achievements/badges/coll_general_2000.png",
+    "category": "quantity",
+    "target": 2000,
+    "colorClass": "from-blue-700 to-blue-500"
+  },
+  {
+    "id": "coll_general_3000",
+    "title": "Master Collector",
+    "description": "Reach 3000 Pokémon in your album.",
+    "image": "assets/achievements/badges/coll_general_3000.png",
+    "category": "quantity",
+    "target": 3000,
+    "colorClass": "from-purple-700 to-fuchsia-600"
+  },
+  {
+    "id": "type_grass",
+    "title": "Guardian of the Forest",
+    "description": "Own 100 Grass-type Pokémon.",
+    "image": "assets/achievements/badges/type_grass.png",
+    "category": "type",
+    "conditionKey": "Grass",
+    "target": 100,
+    "colorClass": "from-emerald-500 to-green-400"
+  },
+  {
+    "id": "type_fire",
+    "title": "Flame Ruler",
+    "description": "Own 100 Fire-type Pokémon.",
+    "image": "assets/achievements/badges/type_fire.png",
+    "category": "type",
+    "conditionKey": "Fire",
+    "target": 100,
+    "colorClass": "from-orange-600 to-red-500"
+  },
+  {
+    "id": "type_water",
+    "title": "Lord of the Oceans",
+    "description": "Own 100 Water-type Pokémon.",
+    "image": "assets/achievements/badges/type_water.png",
+    "category": "type",
+    "conditionKey": "Water",
+    "target": 100,
+    "colorClass": "from-blue-600 to-cyan-400"
+  },
+  {
+    "id": "type_lightning",
+    "title": "High Voltage Discharge",
+    "description": "Own 100 Lightning-type Pokémon.",
+    "image": "assets/achievements/badges/type_lightning.png",
+    "category": "type",
+    "conditionKey": "Lightning",
+    "target": 100,
+    "colorClass": "from-yellow-400 to-amber-300"
+  },
+  {
+    "id": "type_psychic",
+    "title": "Psychic Power",
+    "description": "Own 100 Psychic-type Pokémon.",
+    "image": "assets/achievements/badges/type_psychic.png",
+    "category": "type",
+    "conditionKey": "Psychic",
+    "target": 100,
+    "colorClass": "from-purple-600 to-fuchsia-400"
+  },
+  {
+    "id": "type_fighting",
+    "title": "Fighting Spirit",
+    "description": "Own 100 Fighting-type Pokémon.",
+    "image": "assets/achievements/badges/type_fighting.png",
+    "category": "type",
+    "conditionKey": "Fighting",
+    "target": 100,
+    "colorClass": "from-amber-800 to-orange-700"
+  },
+  {
+    "id": "type_darkness",
+    "title": "Lord of Darkness",
+    "description": "Own 100 Darkness-type Pokémon.",
+    "image": "assets/achievements/badges/type_darkness.png",
+    "category": "type",
+    "conditionKey": "Darkness",
+    "target": 100,
+    "colorClass": "from-slate-800 to-indigo-950"
+  },
+  {
+    "id": "type_metal",
+    "title": "Steel Armor",
+    "description": "Own 100 Metal-type Pokémon.",
+    "image": "assets/achievements/badges/type_metal.png",
+    "category": "type",
+    "conditionKey": "Metal",
+    "target": 100,
+    "colorClass": "from-slate-500 to-zinc-400"
+  },
+  {
+    "id": "type_dragon",
+    "title": "Draconic Fury",
+    "description": "Own 100 Dragon-type Pokémon.",
+    "image": "assets/achievements/badges/type_dragon.png",
+    "category": "type",
+    "conditionKey": "Dragon",
+    "target": 100,
+    "colorClass": "from-indigo-600 to-violet-500"
+  },
+  {
+    "id": "type_colorless",
+    "title": "Neutral Balance",
+    "description": "Own 100 Colorless-type Pokémon.",
+    "image": "assets/achievements/badges/type_colorless.png",
+    "category": "type",
+    "conditionKey": "Colorless",
+    "target": 100,
+    "colorClass": "from-zinc-300 to-neutral-100 text-slate-900"
+  },
+  {
+    "id": "rarity_ultra_v",
+    "title": "V-Card Hunter",
+    "description": "Find 5 ultra rare V-type cards.",
+    "image": "assets/achievements/badges/rarity_ultra_v.png",
+    "category": "rarity",
+    "conditionKey": "V",
+    "target": 5,
+    "colorClass": "from-fuchsia-600 to-pink-500"
+  }
+]

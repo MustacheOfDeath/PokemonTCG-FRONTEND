@@ -1,0 +1,131 @@
+<app-navbar></app-navbar>
+
+<div class="admin-container">
+  <header class="admin-header">
+    <h1>Achievement Management</h1>
+    <div>
+      <button class="btn-primary" (click)="openEditModal({})">Add New</button>
+      <button class="btn-secondary" (click)="downloadJson()">Download JSON</button>
+    </div>
+  </header>
+
+  @if (achievements.length === 0) {
+    <div class="loading-state">
+      Loading achievements...
+    </div>
+  } @else {
+    <table class="admin-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Target</th>
+        <th>Condition</th>
+        <th class="text-right">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (item of achievements; track item.id) {
+          <tr>
+            <td><code>{{ item.id }}</code></td>
+            <td><strong>{{ item.title }}</strong></td>
+            <td><span class="badge">{{ item.category }}</span></td>
+            <td>{{ item.target }}</td>
+            <td>{{ item.conditionKey || '-' }}</td>
+            <td class="text-right">
+              <button class="btn-edit" (click)="openEditModal(item)">Edit</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+
+@if (isModalOpen) {
+  <div class="modal-backdrop">
+    <div class="modal-card">
+      <h2 class="text-xl font-bold mb-4">{{ editingAchievement.id ? 'Edit Achievement' : 'New Achievement' }}</h2>
+
+      <div class="form-grid">
+        <div class="form-group"><label>ID</label><input [(ngModel)]="editingAchievement.id" /></div>
+        <div class="form-group"><label>Title</label><input [(ngModel)]="editingAchievement.title" /></div>
+        <div class="form-group full-width"><label>Description</label><input [(ngModel)]="editingAchievement.description" /></div>
+        <div class="form-group"><label>Category</label>
+          <select [(ngModel)]="editingAchievement.category">
+            <option value="quantity">Quantity</option><option value="type">Type</option><option value="rarity">Rarity</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Target</label><input type="number" [(ngModel)]="editingAchievement.target" /></div>
+        <div class="form-group"><label>Condition Key</label><input [(ngModel)]="editingAchievement.conditionKey" /></div>
+        <div class="form-group"><label>Image Path</label><input [(ngModel)]="editingAchievement.image" /></div>
+
+        <div class="form-group full-width">
+          <label>Gradient Colors</label>
+          <div class="flex gap-4 items-start p-4 color-dropdown">
+
+            <div class="relative w-full">
+              <label class="text-[10px] font-bold uppercase text-(--text-muted)">From</label>
+              <div class="flex items-center gap-2 p-2 mt-1 bg-(--bg-card) rounded-lg border border-(--border-color) cursor-pointer"
+                   (click)="activeDropdown = (activeDropdown === 'from' ? null : 'from')">
+                <div class="w-4 h-4 rounded-full" [style.background-color]="getHexFromPalette(getSelectedColor('from'))"></div>
+                <span class="text-sm truncate">{{ getSelectedColor('from') }}</span>
+              </div>
+              @if (activeDropdown === 'from') {
+                <div class="fixed z-60 w-62.5 mt-2 max-h-60 overflow-y-auto bg-(--bg-card) border border-(--border-color) rounded-lg shadow-2xl">
+                  @for (color of colorKeys; track color) {
+                    <div class="flex items-center gap-3 p-2 hover:bg-(--bg-main) cursor-pointer transition-colors" (click)="selectColor('from', color)">
+                      <div class="w-4 h-4 rounded-full" [style.background-color]="getHexFromPalette(color)"></div>
+                      <span class="text-sm">{{ color }}</span>
+                      @if (isColorSelected('from', color)) {
+                        <span class="ml-auto text-xs">✓</span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="relative w-full">
+              <label class="text-[10px] font-bold uppercase text-(--text-muted)">To</label>
+              <div class="flex items-center gap-2 p-2 mt-1 bg-(--bg-card) rounded-lg border border-(--border-color) cursor-pointer"
+                   (click)="activeDropdown = (activeDropdown === 'to' ? null : 'to')">
+                <div class="w-4 h-4 rounded-full" [style.background-color]="getHexFromPalette(getSelectedColor('to'))"></div>
+                <span class="text-sm truncate">{{ getSelectedColor('to') }}</span>
+              </div>
+              @if (activeDropdown === 'to') {
+                <div class="fixed z-60 w-62.5 mt-2 max-h-60 overflow-y-auto bg-(--bg-card) border border-(--border-color) rounded-lg shadow-2xl">
+                  @for (color of colorKeys; track color) {
+                    <div class="flex items-center gap-3 p-2 hover:bg-(--bg-main) cursor-pointer transition-colors" (click)="selectColor('to', color)">
+                      <div class="w-4 h-4 rounded-full" [style.background-color]="getHexFromPalette(color)"></div>
+                      <span class="text-sm">{{ color }}</span>
+                      @if (isColorSelected('to', color)) {
+                        <span class="ml-auto text-xs">✓</span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center gap-1 mt-2">
+            <label class="text-[10px] font-bold uppercase text-(--text-muted)">Preview</label>
+            <div class="px-8 py-3 rounded-lg font-bold text-xl w-full h-12.5
+                flex items-center justify-center border border-(--border-color)
+                bg-linear-to-r bg-clip-text text-transparent drop-shadow-sm bg-black/5"
+                 [ngClass]="editingAchievement.colorClass">
+              {{ editingAchievement.title || 'Novice Trainer' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline" (click)="isModalOpen = false">Cancel</button>
+        <button class="btn-primary" [disabled]="!isFormValid()" (click)="saveAchievement()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+}

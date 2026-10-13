@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-(--bg-main) flex flex-col justify-center items-center px-4 relative overflow-hidden transition-colors duration-300">
+
+  <div class="pointer-events-none absolute -top-24 -left-24 w-80 h-80 bg-amber-400/20 rounded-full blur-3xl"></div>
+  <div class="pointer-events-none absolute -bottom-24 -right-24 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl"></div>
+
+  <div class="absolute top-4 right-4">
+    <button (click)="themeService.toggleTheme()" class="cursor-pointer p-2.5 rounded-full bg-(--bg-card) border border-(--border-color) hover:bg-(--bg-input) active:scale-90 transition-all text-amber-500 shadow-md">
+      @if (themeService.isDarkMode()) {
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+      } @else {
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-6.354z" /></svg>
+      }
+    </button>
+  </div>
+
+  <div class="relative max-w-md w-full bg-(--bg-card) rounded-2xl shadow-xl border border-(--border-color) p-8 transition-colors duration-300">
+
+    <div class="text-center mb-8">
+      <div class="w-12 h-12 bg-amber-400 rounded-full flex items-center justify-center shadow-lg shadow-amber-400/30 mx-auto mb-3">
+        <img src="/favicon.ico" alt="Pocket" class="w-5 h-5 object-contain">
+      </div>
+      <h2 class="text-2xl font-black text-(--text-main) uppercase tracking-wide">Welcome Back</h2>
+    </div>
+
+    @if (errorMessage) {
+      <div class="mb-4 p-4 bg-red-500/10 border-l-4 border-red-500 rounded-r-xl text-sm font-semibold text-red-600">
+        {{ errorMessage }}
+      </div>
+    }
+    @if (successMessage) {
+      <div class="mb-4 p-4 bg-emerald-500/10 border-l-4 border-emerald-500 rounded-r-xl text-sm font-semibold text-emerald-600">
+        {{ successMessage }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()" class="space-y-5">
+      <div>
+        <label class="block text-xs font-bold text-(--text-muted) uppercase tracking-wider mb-2">Username</label>
+        <input type="text" [(ngModel)]="credentials.username" name="username" required class="w-full bg-(--bg-main) border border-(--border-color) rounded-xl px-4 py-2.5 text-(--text-main) focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors">
+      </div>
+
+      <div class="relative">
+        <label class="block text-xs font-bold text-(--text-muted) uppercase tracking-wider mb-2">Password</label>
+        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="credentials.password" name="password" required class="w-full bg-(--bg-main) border border-(--border-color) rounded-xl px-4 py-2.5 pr-12 text-(--text-main) focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors">
+        <button type="button" (click)="showPassword = !showPassword" class="cursor-pointer absolute right-3 top-10 text-(--text-muted)">
+          @if (!showPassword) {
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" stroke-width="2" /></svg>
+          } @else {
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-width="2" /></svg>
+          }
+        </button>
+      </div>
+
+      <div class="flex justify-end">
+        <button type="button" (click)="openForgotPassword()" class="cursor-pointer text-xs font-bold text-amber-500 hover:underline">Forgot password?</button>
+      </div>
+
+      <button type="submit" class="cursor-pointer w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-black py-3 rounded-xl uppercase tracking-wider text-sm shadow-md hover:shadow-lg hover:shadow-amber-500/30 active:scale-[0.98] transition-all">Sign In</button>
+    </form>
+    <div class="text-center mt-6 text-sm">
+      <span class="text-(--text-muted) font-medium">New trainer here? </span>
+      <a routerLink="/register" class="cursor-pointer text-amber-500 font-bold hover:underline">Create an account</a>
+    </div>
+  </div>
+</div>
+
+@if (forgotPasswordMode) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div class="bg-(--bg-card) border border-(--border-color) rounded-2xl p-6 max-w-sm w-full shadow-2xl animate-in zoom-in-95 duration-200">
+      <h3 class="text-lg font-black uppercase mb-4 text-(--text-main)">Reset Password</h3>
+
+      @if (resetStep === 1) {
+        <div class="space-y-4">
+          <input type="email" [(ngModel)]="resetData.email" name="forgotEmail" placeholder="Email" class="w-full bg-(--bg-main) p-2.5 rounded-xl border border-(--border-color) text-(--text-main)">
+          <button (click)="requestOtp()" [disabled]="isLoading" class="cursor-pointer w-full bg-amber-500 hover:bg-amber-400 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed p-2.5 rounded-xl font-bold text-slate-900 transition-all">
+            {{ isLoading ? 'Sending...' : 'Send Code' }}
+          </button>
+        </div>
+      } @else {
+        <div class="space-y-4">
+          <input type="text" [(ngModel)]="resetData.otp" name="forgotOtp" placeholder="X-X-X-X-X-X" class="w-full bg-(--bg-main) p-2.5 rounded-xl border border-(--border-color) text-center tracking-widest font-mono text-(--text-main)">
+
+          <div class="relative">
+            <input [type]="showResetPassword ? 'text' : 'password'" [(ngModel)]="resetData.newPassword" name="forgotNewPass" placeholder="New Password" class="w-full bg-(--bg-main) p-2.5 rounded-xl border border-(--border-color) pr-12 text-(--text-main)">
+            <button type="button" (click)="showResetPassword = !showResetPassword" class="cursor-pointer absolute right-3 top-2.5 text-(--text-muted)">
+              @if (!showResetPassword) {
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" stroke-width="2" /></svg>
+              } @else {
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-width="2" /></svg>
+              }
+            </button>
+          </div>
+
+          <button (click)="submitReset()" [disabled]="isLoading" class="cursor-pointer w-full bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed text-white p-2.5 rounded-xl font-bold transition-all">
+            {{ isLoading ? 'Resetting...' : 'Reset Password' }}
+          </button>
+        </div>
+      }
+
+      <button (click)="forgotPasswordMode = false" class="cursor-pointer mt-4 w-full text-xs font-bold text-(--text-muted) hover:text-(--text-main)">Cancel</button>
+    </div>
+  </div>
+}
