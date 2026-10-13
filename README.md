@@ -136,6 +136,7 @@ The backend requires a configured MySQL database and the appropriate application
 
 - **Frontend:** [PokemonTCG-FRONTEND](https://github.com/MustacheOfDeath/PokemonTCG-FRONTEND)
 - **Backend:** [PokemonTCG](https://github.com/MustacheOfDeath/PokemonTCG)
+- **Official Pokémon TCG Dataset:** [PokemonTCG/pokemon-tcg-data](https://github.com/PokemonTCG/pokemon-tcg-data)
 
 ---
 
