@@ -49,6 +49,7 @@ body {
   --text-muted: #94a3b8;
   --text-navbar: #ffffff;
   --border-color: #334155;
+  --text-accent: #f59e0b;
 
   font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;
   background-color: var(--bg-main);
@@ -67,6 +68,7 @@ body {
   --text-muted: #94a3b8;
   --text-navbar: #ffffff;
   --border-color: #334155;
+  --text-accent: #f59e0b;
 }
 
 .light-theme {
@@ -78,6 +80,7 @@ body {
   --text-muted: #64748b;
   --text-navbar: #0f172a;
   --border-color: #cbd5e1;
+  --text-accent: #f59e0b;
 
   background-color: var(--bg-main);
   color: var(--text-main);

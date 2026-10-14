@@ -86,7 +86,8 @@
               Collect
             </button>
             <button (click)="toggleWishlist.emit(card?.id)"
-                    class="cursor-pointer px-3 bg-(--bg-main) hover:bg-(--bg-input) text-(--text-muted) hover:text-(--text-main) font-bold py-3 rounded-xl border border-(--border-color) active:scale-95 transition-all flex items-center justify-center gap-2">
+                    class="cursor-pointer px-3 bg-(--bg-main) hover:bg-(--bg-input) text-(--text-muted) hover:text-(--text-main) font-bold py-3 rounded-xl border border-(--border-color) active:scale-95 transition-all flex items-center justify-center gap-2
+                            {{ inWishlist ? 'hover:[&_svg]:fill-transparent hover:[&_svg]:text-slate-400' : 'hover:[&_svg]:fill-rose-500 hover:[&_svg]:text-rose-500' }}">
               <svg class="w-4 h-4 transition-colors"
                    [class.text-rose-500]="inWishlist"
                    [class.fill-rose-500]="inWishlist"
@@ -98,11 +99,11 @@
           } @else {
             @if (inCollection) {
               <div
-                class="flex-1 bg-slate-800 text-slate-400 font-bold py-3 rounded-xl border border-slate-700 text-center cursor-default flex items-center justify-center">
+                class="flex-1 text-(--text-muted) text-slate-400 font-bold py-3 rounded-lg border border-slate-700 text-center cursor-default">
                 Owned
               </div>
               <button (click)="toggleCollection.emit(card?.id)"
-                      class="cursor-pointer px-4 bg-slate-800 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20 active:scale-95 rounded-xl transition-all flex items-center justify-center">
+                      class="cursor-pointer px-4 bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500/30 active:scale-95 rounded-lg transition-all">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -114,7 +115,9 @@
                 Collect
               </button>
               <button (click)="toggleWishlist.emit(card?.id)"
-                      class="cursor-pointer px-4 bg-(--bg-main) border border-(--border-color) hover:bg-(--bg-input) text-(--text-muted) hover:text-(--text-main) font-bold rounded-xl active:scale-95 transition-all flex items-center justify-center">
+                      class="cursor-pointer px-4 bg-(--bg-main) border border-(--border-color) hover:bg-(--bg-input) text-(--text-muted) hover:text-(--text-main) font-bold rounded-xl active:scale-95 transition-all flex items-center justify-center
+                              {{ inWishlist ? 'hover:[&_svg]:fill-transparent hover:[&_svg]:text-slate-400' : 'hover:[&_svg]:fill-rose-500 hover:[&_svg]:text-rose-500' }}">
+
                 <svg class="w-5 h-5 transition-colors"
                      [class.text-rose-500]="inWishlist"
                      [class.fill-rose-500]="inWishlist"
