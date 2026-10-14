@@ -1,4 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef, Renderer2 } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  Renderer2,
+  HostListener,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PokemonService } from '../../services/pokemon';
@@ -18,6 +26,9 @@ import { NavigationService } from '../../services/navigation';
 export class Dashboard implements OnInit {
   currentSection: 'all' | 'collection' | 'wishlist' = 'all';
   isLoading: boolean = false;
+
+  showScrollTopButton: boolean = false;
+  @ViewChild('topAnchor') topAnchor!: ElementRef;
 
   cards: any[] = [];
   hasMoreCards: boolean = false;
@@ -196,7 +207,7 @@ export class Dashboard implements OnInit {
   changePage(modifier: number): void {
     this.filters.page += modifier;
     this.loadData();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.scrollToTop();
   }
 
   onToggleCollection(cardId: string): void {
@@ -254,10 +265,10 @@ export class Dashboard implements OnInit {
   }
 
   goToPage(page: number): void {
-    if (this.filters.page !== page) {
-      this.filters.page = page;
-      this.loadData();
-    }
+    if (this.filters.page === page) return;
+    this.filters.page = page;
+    this.loadData();
+    this.scrollToTop();
   }
 
   clearFilters(): void {
@@ -271,5 +282,19 @@ export class Dashboard implements OnInit {
     };
     this.currentSort = 'none';
     this.loadData();
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollPosition =
+      window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.showScrollTopButton = scrollPosition > 300;
+  }
+
+  scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }
