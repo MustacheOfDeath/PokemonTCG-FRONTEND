@@ -21,6 +21,19 @@
             }
           </button>
 
+          <a href="https://ko-fi.com/mustacheofdeath" target="_blank" rel="noopener noreferrer"
+             class="cursor-pointer hidden sm:flex items-center gap-2 bg-[#FF5E5B]/10 hover:bg-[#FF5E5B]/20 text-[#FF5E5B] border border-[#FF5E5B]/30 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95"
+             title="Support me on Ko-fi">
+            <img src="https://storage.ko-fi.com/cdn/logomarkLogo.png" alt="Ko-fi Logo" class="w-4 h-4 object-contain shrink-0">
+            <span>Ko-fi</span>
+          </a>
+
+          <a href="https://ko-fi.com/mustacheofdeath" target="_blank" rel="noopener noreferrer"
+             class="cursor-pointer sm:hidden p-2 bg-[#FF5E5B]/10 text-[#FF5E5B] rounded-full border border-[#FF5E5B]/30 flex items-center justify-center transition-all active:scale-95"
+             title="Support me on Ko-fi">
+            <img src="https://storage.ko-fi.com/cdn/logomarkLogo.png" alt="Ko-fi Logo" class="w-4 h-4 object-contain shrink-0">
+          </a>
+
           <div class="relative" (click)="$event.stopPropagation()">
             <button (click)="isMenuOpen = !isMenuOpen"
                     class="cursor-pointer flex items-center gap-2 bg-(--bg-input) px-2 sm:px-4 py-1.5 rounded-full border border-(--border-color) transition-all active:scale-[0.97] hover:bg-slate-800 max-w-35 sm:max-w-none">
@@ -71,6 +84,10 @@
                       Hall of Fame
                     </a>
                     <hr class="border-slate-800 my-1">
+                    <a routerLink="/about" (click)='isMenuOpen = false' class="group flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-amber-400 transition-colors duration-150 cursor-pointer">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      About
+                    </a>
                   </div>
                 }
 

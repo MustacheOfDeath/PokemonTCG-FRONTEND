@@ -8,6 +8,7 @@ import { Profile } from './components/profile/profile';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard';
 import { AchievementsComponent } from './components/achievements/achievements';
 import { AdminAchievementsComponent } from './components/admin-achievements/admin-achievements';
+import { AboutComponent } from './components/about/about';
 
 const adminBlockGuard = () => {
   const router = inject(Router);
@@ -35,6 +36,7 @@ export const routes: Routes = [
 
   { path: 'dashboard', component: Dashboard, canActivate: [adminBlockGuard] },
   { path: 'profile', component: Profile, canActivate: [adminBlockGuard] },
+  { path: 'about', component: AboutComponent, canActivate: [adminBlockGuard] },
 
   {
     path: 'achievements',
