@@ -12,7 +12,7 @@ import { interval, Subscription, switchMap, takeWhile } from 'rxjs';
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
 })
-export class AdminDashboardComponent implements OnInit, OnDestroy{
+export class AdminDashboardComponent implements OnInit, OnDestroy {
   isImporting = false;
   users: AdminUser[] = [];
   isLoading = true;
@@ -26,6 +26,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy{
   inputLabel = '';
   inputValue = '';
   inputPlaceholder = '';
+  lastImportTime = 'Loading...';
 
   private statusSubscription?: Subscription;
 
@@ -186,8 +187,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy{
 
   checkImportStatusAndPoll() {
     this.adminService.getImportStatus().subscribe({
-      next: (status: boolean) => {
-        this.isImporting = status;
+      next: (statusObj) => {
+        this.isImporting = statusObj.importing;
+        this.lastImportTime = statusObj.lastImportTime;
         this.cdr.detectChanges();
 
         if (this.isImporting) {
@@ -206,14 +208,15 @@ export class AdminDashboardComponent implements OnInit, OnDestroy{
     this.statusSubscription = interval(3000)
       .pipe(
         switchMap(() => this.adminService.getImportStatus()),
-        takeWhile((status) => status === true, true),
+        takeWhile((statusObj) => statusObj.importing === true, true),
       )
       .subscribe({
-        next: (status: boolean) => {
-          this.isImporting = status;
+        next: (statusObj) => {
+          this.isImporting = statusObj.importing;
+          this.lastImportTime = statusObj.lastImportTime;
           this.cdr.detectChanges();
 
-          if (!status) {
+          if (!statusObj.importing) {
             this.loadUsers();
           }
         },
@@ -229,16 +232,23 @@ export class AdminDashboardComponent implements OnInit, OnDestroy{
       () => {
         this.isImporting = true;
         this.cdr.detectChanges();
+        this.startPolling();
 
         this.adminService.loadData().subscribe({
           next: () => {
-            this.isImporting = false;
-            this.loadUsers();
-            this.cdr.detectChanges();
+            this.adminService.getImportStatus().subscribe((statusObj) => {
+              this.isImporting = statusObj.importing;
+              this.lastImportTime = statusObj.lastImportTime;
+              this.loadUsers();
+              this.cdr.detectChanges();
+            });
           },
           error: (err) => {
             console.error('Error during data sync.', err);
             this.isImporting = false;
+            if (this.statusSubscription) {
+              this.statusSubscription.unsubscribe();
+            }
             this.cdr.detectChanges();
           },
         });

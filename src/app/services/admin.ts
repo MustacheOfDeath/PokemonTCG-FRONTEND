@@ -11,6 +11,11 @@ export interface AdminUser {
   wishlistSize: number;
 }
 
+export interface ImportStatus {
+  importing: boolean;
+  lastImportTime: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -47,7 +52,7 @@ export class AdminService {
     return this.http.post(`${this.apiUrl}/import`, {}, { responseType: 'text' });
   }
 
-  getImportStatus(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/import-status`);
+  getImportStatus(): Observable<ImportStatus> {
+    return this.http.get<ImportStatus>(`${this.apiUrl}/import-status`);
   }
 }
