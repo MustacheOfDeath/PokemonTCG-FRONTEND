@@ -46,4 +46,8 @@ export class AdminService {
   loadData(): Observable<any> {
     return this.http.post(`${this.apiUrl}/import`, {}, { responseType: 'text' });
   }
+
+  getImportStatus(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/import-status`);
+  }
 }

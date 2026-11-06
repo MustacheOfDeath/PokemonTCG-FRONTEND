@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService, AdminUser } from '../../services/admin';
 import { Navbar } from '../navbar/navbar';
+import { interval, Subscription, switchMap, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -11,7 +12,8 @@ import { Navbar } from '../navbar/navbar';
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
 })
-export class AdminDashboardComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit, OnDestroy{
+  isImporting = false;
   users: AdminUser[] = [];
   isLoading = true;
   errorMessage = '';
@@ -25,6 +27,8 @@ export class AdminDashboardComponent implements OnInit {
   inputValue = '';
   inputPlaceholder = '';
 
+  private statusSubscription?: Subscription;
+
   private pendingAction: () => void = () => {};
 
   constructor(
@@ -34,6 +38,13 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.checkImportStatusAndPoll();
+  }
+
+  ngOnDestroy() {
+    if (this.statusSubscription) {
+      this.statusSubscription.unsubscribe();
+    }
   }
 
   loadUsers(): void {
@@ -173,18 +184,63 @@ export class AdminDashboardComponent implements OnInit {
     );
   }
 
+  checkImportStatusAndPoll() {
+    this.adminService.getImportStatus().subscribe({
+      next: (status: boolean) => {
+        this.isImporting = status;
+        this.cdr.detectChanges();
+
+        if (this.isImporting) {
+          this.startPolling();
+        }
+      },
+      error: (err) => console.error('Error checking import status', err),
+    });
+  }
+
+  startPolling() {
+    if (this.statusSubscription) {
+      this.statusSubscription.unsubscribe();
+    }
+
+    this.statusSubscription = interval(3000)
+      .pipe(
+        switchMap(() => this.adminService.getImportStatus()),
+        takeWhile((status) => status === true, true),
+      )
+      .subscribe({
+        next: (status: boolean) => {
+          this.isImporting = status;
+          this.cdr.detectChanges();
+
+          if (!status) {
+            this.loadUsers();
+          }
+        },
+        error: (err) => console.error('Error during status polling', err),
+      });
+  }
+
   triggerDataImport() {
     this.openCustomModal(
       'Data Synchronization',
       'Are you sure you want to trigger the data synchronization? This action will update the database.',
       'warning',
       () => {
+        this.isImporting = true;
+        this.cdr.detectChanges();
+
         this.adminService.loadData().subscribe({
           next: () => {
-            this.cdr.detectChanges();
+            this.isImporting = false;
             this.loadUsers();
+            this.cdr.detectChanges();
           },
-          error: (err) => console.error('Error during data sync.', err),
+          error: (err) => {
+            console.error('Error during data sync.', err);
+            this.isImporting = false;
+            this.cdr.detectChanges();
+          },
         });
       },
     );

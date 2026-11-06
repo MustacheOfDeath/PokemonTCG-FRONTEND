@@ -5,7 +5,13 @@
     <div>
       <h1>Administrative Panel</h1>
     </div>
-    <button class="btn-primary" (click)="triggerDataImport()">Sync Data</button>
+    <button
+      class="btn-primary"
+      [disabled]="isImporting"
+      [class.btn-disabled]="isImporting"
+      (click)="triggerDataImport()">
+      {{ isImporting ? 'Import in progress...' : 'Sync Data' }}
+    </button>
   </header>
 
   <table class="admin-table">
